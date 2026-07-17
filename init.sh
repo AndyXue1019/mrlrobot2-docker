@@ -3,6 +3,11 @@ set -eo pipefail
 
 ROS_DISTRO="${ROS_DISTRO:-jazzy}"
 COLCON_WORKSPACE="${COLCON_WORKSPACE:-colcon_ws}"
+LOCK_FILE="$HOME/.ros_init_done"
+
+if [ "${1:-}" != "--force" ] && [ -f "$LOCK_FILE" ]; then
+    return 0 2>/dev/null || exit 0
+fi
 
 append_if_missing() {
     local line="$1"
@@ -51,5 +56,6 @@ append_if_missing "source /opt/ros/${ROS_DISTRO}/setup.bash" "$HOME/.bashrc"
 append_if_missing "source $HOME/${COLCON_WORKSPACE}/install/setup.bash" "$HOME/.bashrc"
 append_if_missing "export ROS_DOMAIN_ID=30 # 0~101" "$HOME/.bashrc"
 
+touch "$LOCK_FILE"
 echo "Complete."
 echo "Please restart the terminal."
