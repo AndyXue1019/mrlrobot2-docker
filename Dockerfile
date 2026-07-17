@@ -53,6 +53,7 @@ RUN mkdir -p /opt/${COLCON_WORKSPACE}/src/turtlebot \
 COPY init.sh /usr/local/bin/init.sh
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/init.sh /usr/local/bin/entrypoint.sh
+    && echo "/usr/local/bin/init.sh" >> /etc/bash.bashrc
 
 WORKDIR /home/${USER_NAME}
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
