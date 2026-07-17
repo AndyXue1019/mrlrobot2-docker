@@ -16,7 +16,7 @@ WORKDIR /opt/${COLCON_WORKSPACE}/src
 
 RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://tw.archive.ubuntu.com/ubuntu/|g' /etc/apt/sources.list.d/ubuntu.sources && \
     apt-get update && apt-get install -y \
-    ca-certificates curl git sudo gnupg2 lsb-release locales \
+    build-essential ca-certificates curl git sudo gnupg2 lsb-release locales \
     && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US en_US.UTF-8 \
