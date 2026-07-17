@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
 ROS_DISTRO="${ROS_DISTRO:-jazzy}"
 COLCON_WORKSPACE="${COLCON_WORKSPACE:-colcon_ws}"
@@ -25,7 +25,7 @@ fi
 if [ -d "$WORKSPACE_ROOT/src" ]; then
     echo "Installing ROS dependencies..."
     cd "$WORKSPACE_ROOT/src"
-    rosdep init >/dev/null 2>&1 || true
+    sudo rosdep init >/dev/null 2>&1 || true
     rosdep update >/dev/null 2>&1 || true
     rosdep install --from-paths ./ --ignore-src -r -y
 fi
@@ -36,6 +36,7 @@ if [ -d "$WORKSPACE_ROOT" ]; then
     colcon build --symlink-install >/dev/null 2>&1 || true
 fi
 
+echo "Adding Environment Variables..."
 append_if_missing "" "$HOME/.bashrc"
 
 append_if_missing "alias eb='vim ~/.bashrc'" "$HOME/.bashrc"
@@ -49,3 +50,6 @@ append_if_missing "alias cb='cd ~/${COLCON_WORKSPACE} && colcon build --symlink-
 append_if_missing "source /opt/ros/${ROS_DISTRO}/setup.bash" "$HOME/.bashrc"
 append_if_missing "source $HOME/${COLCON_WORKSPACE}/install/setup.bash" "$HOME/.bashrc"
 append_if_missing "export ROS_DOMAIN_ID=30 # 0~101" "$HOME/.bashrc"
+
+echo "Complete."
+echo "Please restart the terminal."
